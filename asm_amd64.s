@@ -1,6 +1,6 @@
 #include "textflag.h"
 
-// func sum(s uint, b []byte) uint
+// func sum(s uint64, b []byte) uint64
 TEXT ·sum(SB),NOSPLIT,$0
     MOVQ s+0(FP), AX
     MOVQ b_base+8(FP), BX
