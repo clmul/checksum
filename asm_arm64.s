@@ -36,7 +36,7 @@ loop8:
     JMP  loop8
 
 done:
-    MOVD R1, r+32(FP)
+    MOVD R1, ret+32(FP)
     RET
 
 loop64:

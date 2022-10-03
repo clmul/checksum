@@ -35,7 +35,7 @@ loop8:
     JMP  loop8
 
 done:
-    MOVQ AX, r+32(FP)
+    MOVQ AX, ret+32(FP)
     RET
 
 loop64:

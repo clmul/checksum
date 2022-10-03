@@ -3,14 +3,14 @@ package checksum
 import (
 	"bytes"
 	"encoding/hex"
-	"io/ioutil"
 	"math/rand"
+	"os"
 	"strings"
 	"testing"
 )
 
 func readFile(t testing.TB, f string) [][]byte {
-	data, err := ioutil.ReadFile(f)
+	data, err := os.ReadFile(f)
 	if err != nil {
 		t.Fatal(err)
 	}
