@@ -1,14 +1,30 @@
 on: [push, pull_request]
 name: Test
 jobs:
-  test:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
+  test-amd64:
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/setup-go@v3
       with:
         go-version: '1'
     - uses: actions/checkout@v3
     - run: go test -vet=all -bench=. -v .
+  test-arm:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [armv7l, aarch64]
+        include:
+          - arch: armv7l
+            base_image: raspios_lite:latest
+            go_download: https://go.dev/dl/go1.19.1.linux-armv6l.tar.gz
+          - arch: aarch64
+            base_image: raspios_lite_arm64:latest
+            go_download: https://go.dev/dl/go1.19.1.linux-arm64.tar.gz
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pguyot/arm-runner-action@v2
+        with:
+          base_image: ${{ matrix.base_image }}
+          image_additional_mb: 256
+          commands: curl -L ${{ matrix.go_download }} | gzip -d | tar x; ./go/bin/go env && ./go/bin/go test -vet=all -bench=. -v .
